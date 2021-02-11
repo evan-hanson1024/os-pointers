@@ -106,12 +106,32 @@ int promptInt(std::string message, int min, int max)
 double promptDouble(std::string message, double min, double max)
 {
     double candidate;
+    bool is_not_double_flag = false;
+    std::string candidate_string;
+    int period_counter = 0;
 
     while(true){
+        is_not_double_flag = false;
+        period_counter = 0;
         std::cout << message;
-        std::cin >> candidate;
+        std::cin >> candidate_string;
 
-        if(candidate > min && candidate < max){
+        int i;
+        for (i = 0; i < candidate_string.length(); i++) {
+            if (isdigit(candidate_string[i]) == false) {
+                period_counter++;
+            }
+        }
+
+        if (period_counter > 1) {
+            is_not_double_flag = true;
+        }
+
+        if (!is_not_double_flag) {
+            candidate = std::stod(candidate_string);
+        }
+
+        if(candidate > min && candidate < max && !is_not_double_flag){
             break;
         }
         else{
