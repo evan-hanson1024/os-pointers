@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <limits>
+#include <algorithm>
 
 typedef struct Student {
     int id;
@@ -108,22 +109,28 @@ double promptDouble(std::string message, double min, double max)
     double candidate;
     bool is_not_double_flag = false;
     std::string candidate_string;
-    int period_counter = 0;
+    int non_int_counter = 0;
 
     while(true){
         is_not_double_flag = false;
-        period_counter = 0;
+        non_int_counter = 0;
         std::cout << message;
         std::cin >> candidate_string;
 
         int i;
         for (i = 0; i < candidate_string.length(); i++) {
             if (isdigit(candidate_string[i]) == false) {
-                period_counter++;
+                non_int_counter++;
             }
         }
 
-        if (period_counter > 1) {
+        if (std::count(candidate_string.begin(), candidate_string.end(), '.') > 1) {
+            is_not_double_flag = true;
+        }
+
+        non_int_counter = non_int_counter - std::count(candidate_string.begin(), candidate_string.end(), '.');
+
+        if (non_int_counter > 0) {
             is_not_double_flag = true;
         }
 
